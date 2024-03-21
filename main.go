@@ -1,6 +1,5 @@
 package main
 
-
 import (
 	"encoding/json"
 	"fmt"
@@ -12,29 +11,29 @@ import (
 	"time"
 )
 
-var port = ":5500"
+var port = ":1357"
 
 type Status struct {
 	Status U `json:"users"`
 }
 
 type U struct {
-	Wind int `json:"wind"`
-	Water int `json:"water"`
-	WindStatus string `json:"wind_status"`
+	Wind        int    `json:"wind"`
+	Water       int    `json:"water"`
+	WindStatus  string `json:"wind_status"`
 	WaterStatus string `json:"water_status"`
 }
 
-func main (){
+func main() {
 	http.HandleFunc("/", random)
 	http.ListenAndServe(port, nil)
 }
 
-func random(w http.ResponseWriter, r *http.Request){
+func random(w http.ResponseWriter, r *http.Request) {
 	for {
-		time.Sleep(1* time.Second)
+		time.Sleep(1 * time.Second)
 		jsonFile, err := os.Open("status.json")
-		var tpl, errTemp = template.ParseFiles("index.html")
+		var tpl, errTemp = template.ParseFiles("template/index.html")
 
 		if err != nil {
 			fmt.Println(err)
@@ -45,7 +44,7 @@ func random(w http.ResponseWriter, r *http.Request){
 			return
 		}
 
-		byteValue , _ := ioutil.ReadAll(jsonFile)
+		byteValue, _ := ioutil.ReadAll(jsonFile)
 		var x Status
 		json.Unmarshal(byteValue, &x)
 
@@ -64,7 +63,7 @@ func random(w http.ResponseWriter, r *http.Request){
 			x.Status.WindStatus = "Aman"
 		} else if x.Status.Wind <= 15 && x.Status.Water >= 7 {
 			x.Status.WindStatus = "Siaga"
-		} else if x.Status.Wind > 15  {
+		} else if x.Status.Wind > 15 {
 			x.Status.WindStatus = "Bahaya"
 		}
 
