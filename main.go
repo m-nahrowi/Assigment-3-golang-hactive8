@@ -31,7 +31,7 @@ func main() {
 
 func random(w http.ResponseWriter, r *http.Request) {
 	for {
-		time.Sleep(1 * time.Second)
+		time.Sleep(15 * time.Second)
 		jsonFile, err := os.Open("status.json")
 		var tpl, errTemp = template.ParseFiles("template/index.html")
 
